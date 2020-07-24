@@ -135,7 +135,6 @@ export default class Container extends Component {
           value={this.state.url}
           onChange={this.onInputChange}
           type='text'
-          // style={InputStyles}
           valid={this.state.isValid}
           autoFocus={true}
         />

@@ -7,7 +7,7 @@ class Input extends Component {
       <div className='wrapper'>
         <input
           id={this.props.id}
-          value={this.props.url}
+          value={this.props.value}
           placeholder={this.props.placeholder}
           onChange={this.props.onChange}
           type={this.props.type}
