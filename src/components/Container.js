@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Input from './Input';
 import Button from './Button';
+import Copier from './Copier';
 import './Container.css';
 import api_url from '../utils/url';
 import base62 from '../utils/base62';
@@ -47,7 +48,7 @@ export default class Container extends Component {
 
   storeLink = async hash => {
     try {
-      const response = await axios.post(`${api_url}/links/create`, {
+      const response = await axios.post(`${api_url}/links/store`, {
         url: this.state.url,
         shortened: hash,
       });
@@ -61,26 +62,51 @@ export default class Container extends Component {
   };
 
   createShortLink = async () => {
-    const response = await axios.post(`${api_url}/links/get`, {
-      url: this.state.url,
-    });
-    const existing = response.data;
+    const { url } = this.state;
+    let existing = {};
+    try {
+      const response = await axios.post(`${api_url}/links/get`, {
+        url: url,
+      });
+      existing = response.data;
 
-    if (existing) {
-      this.setState({ shortened: existing.shortened });
-    } else {
-      const response = await axios.get(`${api_url}/links/count`);
-      const hash = base62(response.data);
-      this.storeLink(hash);
+      if (existing) {
+        this.setState({ shortened: existing.shortened });
+        return;
+      } else {
+        const response = await axios.get(`${api_url}/links/count`);
+        const hash = base62(response.data);
+        this.storeLink(hash);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
+  onCopy = () => {
+    this.reset();
+    return new Promise((resolve, reject) => {
+      this.setState({ message: 'Your link is copied!' });
+      return setTimeout(() => {
+        return resolve();
+      }, 3000);
+    }).then(() => {
+      return this.resetMessage;
+    });
+  };
+
   render() {
-    const link = this.state.isValid
-      ? this.state.shortened
-        ? this.state.shortened
-        : 'Ready to shorten'
-      : this.state.message;
+    const link = this.state.isValid ? (
+      this.state.shortened ? (
+        <Copier what={this.state.shortened} onCopy={this.onCopy}>
+          Click on me! Shortened: {this.state.shortened}
+        </Copier>
+      ) : (
+        'Ready to shorten'
+      )
+    ) : (
+      this.state.message
+    );
     return (
       <div className='container'>
         <h1>URL Shortener</h1>
