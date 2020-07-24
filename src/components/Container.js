@@ -51,7 +51,6 @@ export default class Container extends Component {
         url: this.state.url,
         shortened: hash,
       });
-      console.log(response);
       this.setState({ shortened: response.data.shortened });
     } catch (error) {
       if (error.response.status === 422) {
