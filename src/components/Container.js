@@ -32,7 +32,11 @@ export default class Container extends Component {
   };
 
   render() {
-    const link = this.state.shortened ? '' : this.state.message;
+    const link = this.state.isValid
+      ? 'Ready to shorten'
+      : this.state.shortened
+      ? ''
+      : this.state.message;
     return (
       <div className='container'>
         <h1>URL Shortener</h1>

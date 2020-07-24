@@ -42,7 +42,7 @@
   color: transparent;
   overflow: hidden;
   /* transition: border-top $invalid_transition ease; */
-  border-top: 3px solid #ff8a65;
+  border-top: 3px solid #00d140;
 }
 
 .highlight--invalid {
