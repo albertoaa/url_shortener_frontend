@@ -17,8 +17,23 @@ export default class Container extends Component {
       shortened: '',
       isValid: false,
       message: fallbackMessage,
+      top100: [],
+      showTop100: false,
     };
   }
+
+  componentDidMount() {
+    this.getTop100();
+  }
+
+  getTop100 = async () => {
+    try {
+      const response = await axios.get(`${api_url}/links/top100`);
+      this.setState({ top100: response.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   validate = value => {
     let { isValid } = this.state;
@@ -81,6 +96,7 @@ export default class Container extends Component {
     } catch (error) {
       console.log(error);
     }
+    this.getTop100();
   };
 
   onCopy = () => {
@@ -93,6 +109,10 @@ export default class Container extends Component {
     }).then(() => {
       return this.resetMessage;
     });
+  };
+
+  showTop100 = () => {
+    this.setState({ showTop100: !this.state.showTop100 });
   };
 
   render() {
@@ -125,6 +145,40 @@ export default class Container extends Component {
         >
           Shorten
         </Button>
+        <Button onClick={() => this.showTop100()}>TOP 100</Button>
+        {this.state.showTop100 ? (
+          <div className='top100'>
+            <h3>Top 100 Most frequently accessed URLs</h3>
+            <table className='table table-light table-hover'>
+              <thead className='thead-dark'>
+                <tr>
+                  <th scope='col'>URL</th>
+                  <th scope='col'>Times Accessed</th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.top100.map(element => {
+                  return (
+                    <tr key={element.id}>
+                      <td className='url'>
+                        <a
+                          href={element.url}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                        >
+                          {element.url}
+                        </a>
+                      </td>
+                      <td>{element.times_accessed}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          ''
+        )}
       </div>
     );
   }

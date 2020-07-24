@@ -8,3 +8,22 @@
   color: #9b9b9b;
   margin-bottom: 15px;
 }
+
+.top100 {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 500px;
+}
+
+.table th {
+  padding: 0.15rem;
+  vertical-align: middle;
+}
+
+.url {
+  text-align: left;
+}
+
+.url > a {
+  padding-left: 20px;
+}
