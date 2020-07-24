@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import Input from './Input';
+import Button from './Button';
 import './Container.css';
-// import api_url from './utils/url';
-// import axios from 'axios';
+import api_url from '../utils/url';
+import base62 from '../utils/base62';
+import axios from 'axios';
 
 const fallbackMessage = 'Please paste a proper link...';
 
@@ -25,17 +27,60 @@ export default class Container extends Component {
     this.setState({ isValid });
   };
 
-  onInputChange = e => {
-    const { value } = e.target;
+  onInputChange = event => {
+    const { value } = event.target;
     this.setState({ url: value });
     this.validate(value);
   };
 
+  resetMessage = () => {
+    this.setState({ message: fallbackMessage });
+  };
+
+  reset = () => {
+    this.setState({
+      shortened: '',
+      url: '',
+      isValid: false,
+    });
+  };
+
+  storeLink = async hash => {
+    try {
+      const response = await axios.post(`${api_url}/links/create`, {
+        url: this.state.url,
+        shortened: hash,
+      });
+      console.log(response);
+      this.setState({ shortened: response.data.shortened });
+    } catch (error) {
+      if (error.response.status === 422) {
+        console.log(error.response.data);
+        this.reset();
+      }
+    }
+  };
+
+  createShortLink = async () => {
+    const response = await axios.post(`${api_url}/links/get`, {
+      url: this.state.url,
+    });
+    const existing = response.data;
+
+    if (existing) {
+      this.setState({ shortened: existing.shortened });
+    } else {
+      const response = await axios.get(`${api_url}/links/count`);
+      const hash = base62(response.data);
+      this.storeLink(hash);
+    }
+  };
+
   render() {
     const link = this.state.isValid
-      ? 'Ready to shorten'
-      : this.state.shortened
-      ? ''
+      ? this.state.shortened
+        ? this.state.shortened
+        : 'Ready to shorten'
       : this.state.message;
     return (
       <div className='container'>
@@ -49,6 +94,12 @@ export default class Container extends Component {
           valid={this.state.isValid}
           autoFocus={true}
         />
+        <Button
+          onClick={() => this.createShortLink()}
+          disabled={!this.state.isValid}
+        >
+          Shorten
+        </Button>
       </div>
     );
   }
