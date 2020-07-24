@@ -27,12 +27,14 @@ export default class Container extends Component {
   }
 
   getTop100 = async () => {
+    let top100 = [];
     try {
       const response = await axios.get(`${api_url}/links/top100`);
-      this.setState({ top100: response.data });
+      top100 = response.data;
     } catch (error) {
       console.log(error);
     }
+    this.setState({ top100 });
   };
 
   validate = value => {
@@ -87,7 +89,6 @@ export default class Container extends Component {
 
       if (existing) {
         this.setState({ shortened: existing.shortened });
-        return;
       } else {
         const response = await axios.get(`${api_url}/links/count`);
         const hash = base62(response.data);
