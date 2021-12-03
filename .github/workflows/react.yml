@@ -27,4 +27,4 @@ jobs: # Jobs that will be executed on an event triggered
         cache: 'npm'
     - run: yarn install
     - run: yarn test
-    - run: npm build
+    - run: yarn build
