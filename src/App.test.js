@@ -4,6 +4,6 @@ import App from './App';
 
 test('renders header', () => {
   const { getByText } = render(<App />);
-  const header = getByText(/URL Shortener/i);
+  const header = getByText(/URL Shortener Failed/i);
   expect(header).toBeInTheDocument();
 });
