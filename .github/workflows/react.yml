@@ -5,7 +5,7 @@ name: React CI/CD
 
 on: # Events that will trigger this workflow
   push:
-    branches: [ master ]
+    branches: [ ci-cd-tutorial ]
   pull_request:
     branches: [ master ]
 
