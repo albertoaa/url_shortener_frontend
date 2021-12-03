@@ -25,6 +25,6 @@ jobs: # Jobs that will be executed on an event triggered
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: yarn i
+    - run: yarn install
     - run: yarn test
     - run: npm build
