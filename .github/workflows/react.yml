@@ -34,5 +34,5 @@ jobs: # Jobs that will be executed on an event triggered
     - run: yarn build
     - run: git config --global user.email "ronin8503@gmail.com"
     - run: git config --global user.name "Alberto Aragon Alvarez"
-    - run: git remote set-url origin https://$MY_USERNAME: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@github.com/$MY_USERNAME/url_shortener_fronted.git
+    - run: git remote set-url origin https://albertoaa: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@github.com/albertoaa/url_shortener_fronted.git
     - run: yarn deploy
