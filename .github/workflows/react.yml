@@ -28,3 +28,4 @@ jobs: # Jobs that will be executed on an event triggered
     - run: yarn install
     - run: yarn test
     - run: yarn build
+    - run: yarn deploy
