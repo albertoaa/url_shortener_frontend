@@ -25,9 +25,14 @@ jobs: # Jobs that will be executed on an event triggered
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
+      env:
+          MY_EMAIL: ronin8503@gmail.com
+          MY_NAME: Alberto Aragon
+          MY_USERNAME: albertoaa
     - run: yarn install
     - run: yarn test
     - run: yarn build
-    - run: git config user.email "ronin8503@gmail.com"
-    - run: git config user.name "Alberto Aragon Alvarez"
+    - run: git config --global user.email "ronin8503@gmail.com"
+    - run: git config --global user.name "Alberto Aragon Alvarez"
+    - run: git remote set-url origin https://$MY_USERNAME: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@github.com/$MY_USERNAME/url_shortener_fronted.git
     - run: yarn deploy
